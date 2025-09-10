@@ -27,4 +27,5 @@ if __name__ == '__main__':
     print(greedy(rides,F))
 
 
+
 #10/09 faire full random mais il faut arriver a mettre tt les coureses sur les viucles
