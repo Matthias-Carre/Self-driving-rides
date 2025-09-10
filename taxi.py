@@ -29,3 +29,7 @@ if __name__ == '__main__':
 
 
 #10/09 faire full random mais il faut arriver a mettre tt les coureses sur les viucles
+
+
+#1st implementation
+#1 select a ride (Sort) 2 select a rotute(random!?) 3 assing the ride to a route 4 unitl there is no ride rides lefts
