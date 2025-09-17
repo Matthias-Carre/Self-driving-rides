@@ -5,3 +5,7 @@ M2 IF
 based on Hash code: 
 Self-driving rides
 Problem statement for the Online Qualification Round of Hash Code 2018
+
+
+
+judge.cpp -> g++ -o out.out file.cpp
