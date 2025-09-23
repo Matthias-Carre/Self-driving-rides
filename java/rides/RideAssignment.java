@@ -16,22 +16,32 @@ public class RideAssignment {
                 int currentRow = 0;
                 int currentCol = 0;
                 for (int i=0;i<vehicle.coursesAssi.size();i++) {
+                    int bonus=0;
                     int rideId = vehicle.coursesAssi.get(i);
                     Course ride = rides.get(rideId);
-                    int travelTimeToStart = Math.abs(currentRow - ride.debutligne) + Math.abs(currentCol - ride.debutcol);
-                    time += travelTimeToStart;
-                    if (time <= ride.earlystart) {
-                        score += B;
-                        time = ride.earlystart;
-                    }
-                    time += ride.distance;
+                    //int travelTimeToStart = distance(vehicle, ride);
+                    int travelTimeToStart = Math.abs(currentCol - ride.debutcol) + Math.abs(currentRow - ride.debutligne);
                     
-                    if (time <= ride.latefin) {
-                        score += ride.distance;
+                    time += travelTimeToStart;
+                    System.out.println("travel time"+travelTimeToStart);
+
+                    if (time <= ride.earlystart) {
+                        bonus += B;
+                        time = ride.earlystart;
                     }
                     currentRow = ride.finligne;
                     currentCol = ride.fincol;
+
+                    time += ride.distance;
+                    
+                    if (time <= ride.latefin) {
+                        score += ride.distance + bonus;
+                    }
+                    currentRow = ride.finligne;
+                    currentCol = ride.fincol;
+
                 }
+
             }
             return score;
     
@@ -39,7 +49,7 @@ public class RideAssignment {
     
         //provisoire
         public static Course earlyCourse(List<Course> rides) {
-            int earliest = 1000000000;
+            int earliest = Integer.MAX_VALUE;
             Course earliestCourse = null;
             for (int i = 0; i < rides.size(); i++) {
                 Course ride = rides.get(i);
