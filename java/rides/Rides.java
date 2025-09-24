@@ -16,7 +16,7 @@ public class Rides {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(out))) {
             for (Vehicle vehicle : vehicles) {
                 // Écrivez l'ID du véhicule et ses courses assignées
-                writer.write(vehicle.vehicleId + " ");
+                writer.write(vehicle.coursesAssi.size() + " ");
                 for (int courseId : vehicle.coursesAssi) {
                     writer.write(courseId + " ");
                 }
@@ -48,7 +48,7 @@ public class Rides {
         for (int i = 0; i < N; i++) {
             int a = scanner.nextInt();  // départ x
             int b = scanner.nextInt();  // départ y
-            int x = scanner.nextInt();  //l'arrivée x
+            int x = scanner.nextInt();  // l'arrivée x
             int y = scanner.nextInt();  // l'arrivée y
             int s = scanner.nextInt();  //  début course
             int f = scanner.nextInt();  //  fin course
@@ -89,11 +89,12 @@ public class Rides {
     
 
     public static void main(String[] args) throws IOException {
+        run("inputs/a_example.in", "out_a.txt");
         run("inputs/b_should_be_easy.in", "out_b.txt");
         run("inputs/c_no_hurry.in", "out_c.txt");
         run("inputs/d_metropolis.in", "out_d.txt");
         run("inputs/e_high_bonus.in", "out_e.txt");
-        
+        run("inputs/output.txt", "out_test.txt");
 
     }
 }

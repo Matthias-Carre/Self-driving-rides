@@ -1,0 +1,5 @@
+./judgeHashCode2018.out ./inputs/a_example.in ./out_a.txt
+./judgeHashCode2018.out ./inputs/b_should_be_easy.in ./out_b.txt 
+./judgeHashCode2018.out ./inputs/c_no_hurry.in ./out_c.txt 
+./judgeHashCode2018.out ./inputs/d_metropolis.in ./out_d.txt
+./judgeHashCode2018.out ./inputs/e_high_bonus.in ./out_e.txt

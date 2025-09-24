@@ -9,6 +9,22 @@ import java.util.Scanner;
 
 public class RideAssignment {
 
+    public static void sorti(List<Vehicle> vehicles,String out) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(out))) {
+            for (Vehicle vehicle : vehicles) {
+                // Écrivez l'ID du véhicule et ses courses assignées
+                writer.write(vehicle.coursesAssi.size() + " ");
+                for (int courseId : vehicle.coursesAssi) {
+                    writer.write(courseId + " ");
+                }
+                writer.newLine(); // Passez à la ligne suivante
+            }
+        } catch (IOException e) {
+            System.err.println("Erreur lors de l'écriture dans le fichier : " + e.getMessage());
+        }
+    }
+
+
     public static int score(List<Vehicle> vehicles, List<Course> rides, int B) {
             int score = 0;
             for (Vehicle vehicle : vehicles) {
@@ -65,7 +81,7 @@ public class RideAssignment {
         public static int distance(Vehicle v, Course c) {
             return Math.abs(v.currentRow - c.debutligne) + Math.abs(v.currentCol - c.debutcol);
         }
-    
+        /*
         public static void sorti(List<Vehicle> vehicles) {
             for (int i = 0; i < vehicles.size(); i++) {
                 Vehicle vehicle = vehicles.get(i);
@@ -75,7 +91,7 @@ public class RideAssignment {
                 }
                 System.out.println();
             }
-        }
+        }*/
     
         public static void main(String[] args) throws IOException {
             File file = new File("inputs/b_should_be_easy.in");
@@ -170,7 +186,7 @@ public class RideAssignment {
                 }
             */
             System.out.println("Out:");
-            sorti(vehicles);
+            sorti(vehicles,"Test.out");
             System.out.println("score="+score(vehicles, rides, B));
         
     }
