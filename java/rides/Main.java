@@ -9,16 +9,17 @@ import java.util.Scanner;
 
 
 
-public class Rides {
+public class Main {
     
+
     
     public static void sorti(List<Vehicle> vehicles,String out) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(out))) {
             for (Vehicle vehicle : vehicles) {
                 // Écrivez l'ID du véhicule et ses courses assignées
-                writer.write(vehicle.coursesAssi.size() + " ");
-                for (int courseId : vehicle.coursesAssi) {
-                    writer.write(courseId + " ");
+                writer.write(vehicle.racesAssi.size() + " ");
+                for (int rideId : vehicle.racesAssi) {
+                    writer.write(rideId + " ");
                 }
                 writer.newLine(); // Passez à la ligne suivante
             }
@@ -65,7 +66,7 @@ public class Rides {
 
             for (int j = 0; j < vehicles.size(); j++) {
                 Vehicle vehicle = vehicles.get(j);
-                int traveltime_debut = Math.abs(vehicle.currentRow - ride.debutligne) + Math.abs(vehicle.currentCol - ride.debutcol);
+                int traveltime_debut = Math.abs(vehicle.currentRow - ride.startLine) + Math.abs(vehicle.currentCol - ride.startCol);
                 int early_debut_possible = Math.max(vehicle.availableTime + traveltime_debut, ride.earlystart);
                 int fintemps = early_debut_possible + ride.distance;
                 if (fintemps <= ride.latefin) {
@@ -78,9 +79,9 @@ public class Rides {
 
             if (bestVehicle != null) {
 
-                bestVehicle.coursesAssi.add(ride.courseId);
-                bestVehicle.currentRow = ride.finligne;
-                bestVehicle.currentCol = ride.fincol;
+                bestVehicle.racesAssi.add(ride.rideId);
+                bestVehicle.currentRow = ride.endLine;
+                bestVehicle.currentCol = ride.endCol;
                 bestVehicle.availableTime = bestTime + ride.distance;
             }
         }
@@ -94,7 +95,7 @@ public class Rides {
         run("inputs/c_no_hurry.in", "out_c.txt");
         run("inputs/d_metropolis.in", "out_d.txt");
         run("inputs/e_high_bonus.in", "out_e.txt");
-        run("inputs/output.txt", "out_test.txt");
+        //run("inputs/output.txt", "out_test.txt");
 
     }
 }
