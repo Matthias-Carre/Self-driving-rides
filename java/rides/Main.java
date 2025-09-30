@@ -12,14 +12,15 @@ import java.util.Scanner;
 public class Main {
     
 
+
     
     public static void sorti(List<Vehicle> vehicles,String out) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(out))) {
             for (Vehicle vehicle : vehicles) {
                 // Écrivez l'ID du véhicule et ses courses assignées
                 writer.write(vehicle.racesAssi.size() + " ");
-                for (int rideId : vehicle.racesAssi) {
-                    writer.write(rideId + " ");
+                for (Ride ride : vehicle.racesAssi) {
+                    writer.write(ride.rideId + " ");
                 }
                 writer.newLine(); // Passez à la ligne suivante
             }
@@ -40,7 +41,7 @@ public class Main {
         int T = scanner.nextInt();
 
         List<Vehicle> vehicles = new ArrayList<>();
-        List<Course> rides = new ArrayList<>();
+        List<Ride> rides = new ArrayList<>();
 
 
         for (int i = 0; i < F; i++) {
@@ -53,13 +54,13 @@ public class Main {
             int y = scanner.nextInt();  // l'arrivée y
             int s = scanner.nextInt();  //  début course
             int f = scanner.nextInt();  //  fin course
-            rides.add(new Course(i, a, b, x, y, s, f));
+            rides.add(new Ride(i, a, b, x, y, s, f));
         }
 
         scanner.close();
 
         for (int i = 0; i < rides.size(); i++) {
-            Course ride = rides.get(i);
+            Ride ride = rides.get(i);
             Vehicle bestVehicle = null;
             int bestTime = Integer.MAX_VALUE;
 
@@ -67,9 +68,9 @@ public class Main {
             for (int j = 0; j < vehicles.size(); j++) {
                 Vehicle vehicle = vehicles.get(j);
                 int traveltime_debut = Math.abs(vehicle.currentRow - ride.startLine) + Math.abs(vehicle.currentCol - ride.startCol);
-                int early_debut_possible = Math.max(vehicle.availableTime + traveltime_debut, ride.earlystart);
+                int early_debut_possible = Math.max(vehicle.availableTime + traveltime_debut, ride.earlyStart);
                 int fintemps = early_debut_possible + ride.distance;
-                if (fintemps <= ride.latefin) {
+                if (fintemps <= ride.lateFin) {
                     if (early_debut_possible < bestTime) {
                         bestVehicle = vehicle;
                         bestTime = early_debut_possible;
@@ -79,12 +80,18 @@ public class Main {
 
             if (bestVehicle != null) {
 
-                bestVehicle.racesAssi.add(ride.rideId);
+                bestVehicle.racesAssi.add(ride);
                 bestVehicle.currentRow = ride.endLine;
                 bestVehicle.currentCol = ride.endCol;
                 bestVehicle.availableTime = bestTime + ride.distance;
             }
         }
+        int totalScore = 0;
+        for (Vehicle vehicle : vehicles) {
+            int score = vehicle.calculateScore(B);
+            totalScore += score;
+        }
+        System.out.println("Total Score: " + totalScore);
         sorti(vehicles,out);
     }
     
