@@ -21,6 +21,7 @@ public class Main {
         inst.fileOut = "outmc_a_example.in";
         inst.longestRides();
         //test 
+        //hihi
         
     }
     public static void main(String[] args) throws IOException {
