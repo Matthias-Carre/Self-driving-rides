@@ -13,6 +13,8 @@ public class Main {
         inst.earlyStartGoal();
         Instancedm instc = new Instancedm("./inputs/c_no_hurry.in");
         instc.earlyStartGoal();
+        Instancedm instd = new Instancedm("./inputs/d_metropolis.in");
+        instd.testGoal();
     }
     public static void runmc() throws IOException {
         Instancemc inst = new Instancemc("./inputs/a_example.in");
