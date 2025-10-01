@@ -18,7 +18,10 @@ public class Main {
     }
     public static void runmc() throws IOException {
         Instancemc inst = new Instancemc("./inputs/a_example.in");
+        inst.fileOut = "outmc_a_example.in";
         inst.longestRides();
+        //test 
+        
     }
     public static void main(String[] args) throws IOException {
         rundm();
