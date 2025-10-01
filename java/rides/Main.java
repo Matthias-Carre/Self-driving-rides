@@ -86,6 +86,7 @@ public class Main {
                 bestVehicle.availableTime = bestTime + ride.distance;
             }
         }
+        
         int totalScore = 0;
         for (Vehicle vehicle : vehicles) {
             int score = vehicle.calculateScore(B);

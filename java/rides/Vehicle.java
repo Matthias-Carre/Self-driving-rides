@@ -26,15 +26,18 @@ class Vehicle {
         for (Ride ride : this.racesAssi) {
             
             //System.out.println("Ride ID: " + ride.rideId + " erlystart"+ ride.earlyStart + "Late Finish: " + ride.lateFin + ", Distance: " + ride.distance + ", Available Time: " + this.availableTime);
-            time+= Math.abs(col - ride.startCol) + Math.abs(line - ride.startLine);
+            time += Math.abs(col - ride.startCol) + Math.abs(line - ride.startLine);
             if (time <= ride.earlyStart) {
                 totalScore += bonus; 
                 time = ride.earlyStart;
             }
+
             time += ride.distance;
             if (time <= ride.lateFin) {
                 totalScore += ride.distance; 
             }
+            col =  ride.endCol;
+            line = ride.endLine;
         }
     
         return totalScore;
