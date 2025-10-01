@@ -11,6 +11,8 @@ public class Main {
     public static void rundm() throws IOException {
         Instancedm inst = new Instancedm("./inputs/a_example.in");
         inst.earlyStartGoal();
+        Instancedm instc = new Instancedm("./inputs/c_no_hurry.in");
+        instc.earlyStartGoal();
     }
     public static void runmc() throws IOException {
         Instancemc inst = new Instancemc("./inputs/a_example.in");
@@ -18,6 +20,6 @@ public class Main {
     }
     public static void main(String[] args) throws IOException {
         rundm();
-        //runmc();
+         //runmc();
     }
 }
