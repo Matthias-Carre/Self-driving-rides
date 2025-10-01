@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class Instance {
+public class Instancemc {
 
     String fileIn;
 
@@ -20,7 +20,7 @@ public class Instance {
     ArrayList<Vehicle> vehicles;
     ArrayList<Ride> rides;
 
-    public Instance(String fileIn)throws FileNotFoundException{
+    public Instancemc(String fileIn)throws FileNotFoundException{
         this.fileIn = fileIn;
         this.vehicles = new ArrayList<>();
         this.rides = new ArrayList<>();

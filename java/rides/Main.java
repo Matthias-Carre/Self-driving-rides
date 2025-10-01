@@ -13,7 +13,7 @@ public class Main {
     
     public static void main(String[] args) throws IOException {
 
-        Instance inst = new Instance("./inputs/a_example.in");
+        Instancemc inst = new Instancemc("./inputs/a_example.in");
 
         inst.earlyStartGoal();
     }
