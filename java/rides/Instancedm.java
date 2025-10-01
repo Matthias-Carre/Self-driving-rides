@@ -1,6 +1,5 @@
 package rides;
 
-import java.util.List;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -111,5 +110,40 @@ public class Instancedm {
         }
         return score();
     }
+    protected int testGoal(){
+        for (Ride ride : rides) {
+            int rideStart = ride.earlyStart;
+            
+
+
+
+            for (int j = 0; j < vehicles.size(); j++) {
+                Vehicle vehicle = vehicles.get(j);
+                int travelTime = Math.abs(vehicle.currentRow - ride.startLine) + Math.abs(vehicle.currentCol - ride.startCol);
+                int earlyStart = Math.max(vehicle.availableTime + travelTime, ride.earlyStart);
+                int endTime = earlyStart + ride.distance;
+                if (endTime <= ride.lateFin) {
+                    if (earlyStart < bestTime) {
+                        bestVehicle = vehicle;
+                        bestTime = earlyStart;
+                    }
+                }
+            }
+
+            if (bestVehicle != null) {
+
+                bestVehicle.racesAssi.add(ride);
+                bestVehicle.currentRow = ride.endLine;
+                bestVehicle.currentCol = ride.endCol;
+                bestVehicle.availableTime = bestTime + ride.distance;
+            }
+        }
+        return score();
+    }
+
+   }
+
     
-}
+
+   
+    
