@@ -130,7 +130,55 @@ public class Instancemc {
             ridesSorted.add(longestRide);
             longestRide.assigned = true;
         }
-        //apres avoir sort on fait lautre fonction sur le tab triller
+
+
+        for (int i = 0; i < ridesSorted.size(); i++) {
+            Ride ride = ridesSorted.get(i);
+            Vehicle bestVehicle = null;
+            int bestTime = Integer.MAX_VALUE;
+
+            for (int j = 0; j < vehicles.size(); j++) {
+                Vehicle vehicle = vehicles.get(j);
+                int travelTime = Math.abs(vehicle.currentRow - ride.startLine) + Math.abs(vehicle.currentCol - ride.startCol);
+                int earlyStart = Math.max(vehicle.availableTime + travelTime, ride.earlyStart);
+                int endTime = earlyStart + ride.distance;
+                if (endTime <= ride.lateFin) {
+                    if (earlyStart < bestTime) {
+                        bestVehicle = vehicle;
+                        bestTime = earlyStart;
+                    }
+                }
+            }
+
+            if (bestVehicle != null) {
+                bestVehicle.racesAssi.add(ride);
+                bestVehicle.currentRow = ride.endLine;
+                bestVehicle.currentCol = ride.endCol;
+                bestVehicle.availableTime = bestTime + ride.distance;
+            }
+        }
+
+        out();
+        return score();
+
+    }
+
+    protected int earlyRides(){
+        ArrayList<Ride> ridesSorted = new ArrayList<>();
+        for(int j=0;j<numRides;j++){
+            Ride earlyRide=null;
+            for(int i = 0; i < rides.size(); i++) {
+                Ride ride = rides.get(i);
+                if(earlyRide==null && !ride.assigned ){
+                    earlyRide=ride;
+                }
+                else if( ((!ride.assigned) && (ride.earlyStart>earlyRide.earlyStart))){
+                    earlyRide=ride;
+                }
+            }
+            ridesSorted.add(earlyRide);
+            earlyRide.assigned = true;
+        }
 
         for (int i = 0; i < ridesSorted.size(); i++) {
             Ride ride = ridesSorted.get(i);

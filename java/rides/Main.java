@@ -20,12 +20,32 @@ public class Main {
         Instancemc inst = new Instancemc("./inputs/a_example.in");
         inst.fileOut = "outmc_a_example.in";
         inst.longestRides();
-        //test 
-        //hihi
+        
+        inst = new Instancemc("./inputs/b_should_be_easy.in");
+        inst.earlyRides();
+
+        inst = new Instancemc("./inputs/c_no_hurry.in");
+        inst.earlyStartGoal();
+
+        inst = new Instancemc("./inputs/d_metropolis.in");
+        inst.earlyStartGoal();
+
+        inst = new Instancemc("./inputs/e_high_bonus.in");
+        inst.earlyStartGoal();
+
+        inst = new Instancemc("./inputs/group_B_instance.in");
+        inst.earlyStartGoal();
+
+        inst = new Instancemc("./inputs/group_C_instance.in");
+        inst.earlyStartGoal();
+
+        inst = new Instancemc("./inputs/group_D_instance.in");
+        inst.earlyStartGoal();
+
         
     }
     public static void main(String[] args) throws IOException {
-        rundm();
-         //runmc();
+        //rundm();
+        runmc();
     }
 }
