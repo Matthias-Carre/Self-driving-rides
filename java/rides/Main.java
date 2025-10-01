@@ -67,13 +67,13 @@ public class Main {
 
             for (int j = 0; j < vehicles.size(); j++) {
                 Vehicle vehicle = vehicles.get(j);
-                int traveltime_debut = Math.abs(vehicle.currentRow - ride.startLine) + Math.abs(vehicle.currentCol - ride.startCol);
-                int early_debut_possible = Math.max(vehicle.availableTime + traveltime_debut, ride.earlyStart);
-                int fintemps = early_debut_possible + ride.distance;
-                if (fintemps <= ride.lateFin) {
-                    if (early_debut_possible < bestTime) {
+                int travelTime = Math.abs(vehicle.currentRow - ride.startLine) + Math.abs(vehicle.currentCol - ride.startCol);
+                int earlyStart = Math.max(vehicle.availableTime + travelTime, ride.earlyStart);
+                int endTime = earlyStart + ride.distance;
+                if (endTime <= ride.lateFin) {
+                    if (earlyStart < bestTime) {
                         bestVehicle = vehicle;
-                        bestTime = early_debut_possible;
+                        bestTime = earlyStart;
                     }
                 }
             }
@@ -86,7 +86,7 @@ public class Main {
                 bestVehicle.availableTime = bestTime + ride.distance;
             }
         }
-        
+
         int totalScore = 0;
         for (Vehicle vehicle : vehicles) {
             int score = vehicle.calculateScore(B);
