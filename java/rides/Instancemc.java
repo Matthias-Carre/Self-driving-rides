@@ -9,6 +9,7 @@ import java.util.Scanner;
 public class Instancemc {
 
     String fileIn;
+    String fileOut = "outdefault" ;
 
     int rows;
     int cols;
@@ -55,8 +56,8 @@ public class Instancemc {
         scanner.close();
     }
 
-    private static void sorti(List<Vehicle> vehicles,String out) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(out))) {
+    private void out() {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("outputs/" + fileOut))) {
             for (Vehicle vehicle : vehicles) {
                 // Écrivez l'ID du véhicule et ses courses assignées
                 writer.write(vehicle.racesAssi.size() + " ");
@@ -109,7 +110,56 @@ public class Instancemc {
                 bestVehicle.availableTime = bestTime + ride.distance;
             }
         }
+        out();
         return score();
     }
     
+    protected int longestRides(){
+        ArrayList<Ride> ridesSorted = new ArrayList<>();
+        for(int j=0;j<numRides;j++){
+            Ride longestRide=null;
+            for(int i = 0; i < rides.size(); i++) {
+                Ride ride = rides.get(i);
+                if(longestRide==null && !ride.assigned ){
+                    longestRide=ride;
+                }
+                else if( ((!ride.assigned) && (ride.distance>longestRide.distance))){
+                    longestRide=ride;
+                }
+            }
+            ridesSorted.add(longestRide);
+            longestRide.assigned = true;
+        }
+        //apres avoir sort on fait lautre fonction sur le tab triller
+
+        for (int i = 0; i < ridesSorted.size(); i++) {
+            Ride ride = ridesSorted.get(i);
+            Vehicle bestVehicle = null;
+            int bestTime = Integer.MAX_VALUE;
+
+            for (int j = 0; j < vehicles.size(); j++) {
+                Vehicle vehicle = vehicles.get(j);
+                int travelTime = Math.abs(vehicle.currentRow - ride.startLine) + Math.abs(vehicle.currentCol - ride.startCol);
+                int earlyStart = Math.max(vehicle.availableTime + travelTime, ride.earlyStart);
+                int endTime = earlyStart + ride.distance;
+                if (endTime <= ride.lateFin) {
+                    if (earlyStart < bestTime) {
+                        bestVehicle = vehicle;
+                        bestTime = earlyStart;
+                    }
+                }
+            }
+
+            if (bestVehicle != null) {
+                bestVehicle.racesAssi.add(ride);
+                bestVehicle.currentRow = ride.endLine;
+                bestVehicle.currentCol = ride.endCol;
+                bestVehicle.availableTime = bestTime + ride.distance;
+            }
+        }
+
+        out();
+        return score();
+
+    }
 }
