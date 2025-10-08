@@ -5,6 +5,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.Collections;
 
 public class Instancemc {
 
@@ -163,6 +164,60 @@ public class Instancemc {
 
     }
 
+    protected int longestRidesLocalSearch(){
+        ArrayList<Ride> ridesSorted = new ArrayList<>();
+        for(int j=0;j<numRides;j++){
+            Ride longestRide=null;
+            for(int i = 0; i < rides.size(); i++) {
+                Ride ride = rides.get(i);
+                if(longestRide==null && !ride.assigned ){
+                    longestRide=ride;
+                }
+                else if( ((!ride.assigned) && (ride.distance>longestRide.distance))){
+                    longestRide=ride;
+                }
+            }
+            ridesSorted.add(longestRide);
+            longestRide.assigned = true;
+        }
+
+
+        for (int i = 0; i < ridesSorted.size(); i++) {
+            Ride ride = ridesSorted.get(i);
+            Vehicle bestVehicle = null;
+            int bestTime = Integer.MAX_VALUE;
+
+            for (int j = 0; j < vehicles.size(); j++) {
+                Vehicle vehicle = vehicles.get(j);
+                int travelTime = Math.abs(vehicle.currentRow - ride.startLine) + Math.abs(vehicle.currentCol - ride.startCol);
+                int earlyStart = Math.max(vehicle.availableTime + travelTime, ride.earlyStart);
+                int endTime = earlyStart + ride.distance;
+                if (endTime <= ride.lateFin) {
+                    if (earlyStart < bestTime) {
+                        bestVehicle = vehicle;
+                        bestTime = earlyStart;
+                    }
+                }
+            }
+
+
+            if (bestVehicle != null) {
+                bestVehicle.racesAssi.add(ride);
+                bestVehicle.currentRow = ride.endLine;
+                bestVehicle.currentCol = ride.endCol;
+                bestVehicle.availableTime = bestTime + ride.distance;
+            }
+        }
+        //upgradeRide(vehicles.get(6));
+        //upgradeRide(vehicles.get(7));
+        swapTry(vehicles);
+        printMetrics();
+        out();
+        return score();
+
+    }
+
+
     protected int earlyRides(){
         ArrayList<Ride> ridesSorted = new ArrayList<>();
         for(int j=0;j<numRides;j++){
@@ -208,6 +263,78 @@ public class Instancemc {
 
         out();
         return score();
+
+    }
+    private void swapTry(List<Vehicle> vehicles){
+        Vehicle v1 = vehicles.get(0);
+        Vehicle v2 = vehicles.get(1);
+        System.out.println("Base Score: V1="+v1.calculateScore(startingBonus)+" V2="+v2.calculateScore(startingBonus));
+        //System.out.println("v1="+v1.printRides());
+        Ride r1a = v1.getRaces().get(0);
+        for(int i=0;i<v2.getRaces().size();i++){
+            Ride r2 = v2.getRaces().get(i);
+            v2.getRaces().set(i,r1a);
+            v1.getRaces().set(0,r2);
+            System.out.println("Score v1:"+v1.calculateScore(startingBonus));
+            System.out.println("Score v2:"+v2.calculateScore(startingBonus));
+        }
+    }
+
+    private void upgradeRide(Vehicle vehicle){
+        //List<Ride> betterRides = vehicle.getRaces();
+        System.out.println("upgrade size:"+ vehicle.getRaces().size()+" actual score:"+vehicle.calculateScore(startingBonus));
+        for (int i = 0; i < vehicle.getRaces().size(); i++) {
+            Ride ride = rides.get(i);
+            for (int j = 0; j < vehicle.getRaces().size(); j++) {
+                if(i!=j){
+                    Collections.swap(vehicle.getRaces(),i,j);
+                    System.out.println("Ride "+i+" "+ j +" "+ vehicle.calculateScore(startingBonus));
+                }
+            }
+        }
+    }
+    private void swapRides(List<Vehicle> vehicles){
+        for (int i = 0; i < vehicles.size(); i++) {
+            Vehicle vehicleA = vehicles.get(i);
+            for (int j = 0; j < vehicles.size(); j++) {
+                Vehicle vehicleB = vehicles.get(j);
+                if(i!=j){
+                    for(int k=0;k<vehicleA.getRaces().size();k++){
+                        for(int l=0;l<vehicleB.getRaces().size();l++){
+                            if(k!=l){
+                                Ride r1 = vehicleA.getRaces().get(k);
+                                Ride r2 = vehicleB.getRaces().get(l);
+                                vehicleA.getRaces().set(k,r2);
+                                vehicleB.getRaces().set(l,r1);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    public void printMetrics(){
+        //maxscore - % complete ride - % bonus get
+        int totalScore = 0;
+        int numBonus = 0;
+        int finisedRides = 0;
+        int maxRidesPoints=0;
+
+        for (Vehicle vehicle : vehicles) {
+            numBonus+=1;
+            int score = vehicle.calculateScore(this.startingBonus);
+            totalScore += score;
+        }
+        for(int i=0; i<rides.size();i++) {
+            maxRidesPoints += rides.get(i).distance;
+        }
+        System.out.println("Metrics of "+ fileIn);
+        System.out.println("Theorical max values:\n Max bonus:"+numRides+"Max Rides Points:"+maxRidesPoints);
+        System.out.println("Results: \n number of Finised Rides:"+finisedRides);
+        System.out.println(" number of bonus:"+numBonus);
+
+
 
     }
 }

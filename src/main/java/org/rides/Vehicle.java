@@ -19,6 +19,17 @@ class Vehicle {
         this.racesAssi = new ArrayList<>();
     }
 
+    List<Ride> getRaces(){
+        return this.racesAssi;
+    }
+
+    public void printRides(){
+        for(int i=0;i<this.racesAssi.size();i++){
+            System.out.println(this.racesAssi.get(i).rideId);
+        }
+        System.out.println();
+    }
+
     public int calculateScore(int bonus) {
         int totalScore = 0;
         int col=0;

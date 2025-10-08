@@ -16,36 +16,39 @@ public class Main {
     }
     public static void runmc() throws IOException {
         Instancemc inst = new Instancemc("./inputs/a_example.in");
+        /*
         inst.fileOut = "outmc_a_example.in";
         inst.longestRides();
 
         inst = new Instancemc("./inputs/b_should_be_easy.in");
-        inst.earlyRides();
+        inst.longestRides();
 
         inst = new Instancemc("./inputs/c_no_hurry.in");
-        inst.earlyStartGoal();
+        inst.longestRides();
 
         inst = new Instancemc("./inputs/d_metropolis.in");
-        inst.earlyStartGoal();
+        inst.longestRides();
 
         inst = new Instancemc("./inputs/e_high_bonus.in");
-        inst.earlyStartGoal();
+        inst.longestRides();
 
         inst = new Instancemc("./inputs/group_B_instance.in");
-        inst.earlyStartGoal();
+        inst.longestRides();
 
         inst = new Instancemc("./inputs/group_C_instance.in");
-        inst.earlyStartGoal();
-
+        inst.longestRides();
+*/
         inst = new Instancemc("./inputs/group_D_instance.in");
-        inst.earlyStartGoal();
+        inst.fileOut ="D";
+        inst.longestRidesLocalSearch();
 
         inst = new Instancemc("./inputs/group-p.in");
-        inst.earlyStartGoal();
+        inst.fileOut ="P";
+        inst.longestRidesLocalSearch();
 
         inst = new Instancemc("./inputs/group-p_big.in");
-        inst.earlyStartGoal();
-
+        inst.fileOut = "pbig";
+        inst.longestRidesLocalSearch();
 
     }
     public static void main(String[] args) throws IOException {

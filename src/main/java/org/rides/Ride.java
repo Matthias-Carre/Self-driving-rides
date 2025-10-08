@@ -25,5 +25,4 @@ class Ride {
         this.assigned = false;
     }
 
-
 }
