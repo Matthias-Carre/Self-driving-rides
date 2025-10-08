@@ -1,4 +1,4 @@
-package rides;
+package org.rides;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -113,11 +113,11 @@ public class Instancedm {
     protected int testGoal(){
         for (Ride ride : rides) {
             int rideStart = ride.earlyStart;
-            
 
-
-
+            int bestTime=10000;
+            Vehicle bestVehicle = vehicles.get(0);
             for (int j = 0; j < vehicles.size(); j++) {
+
                 Vehicle vehicle = vehicles.get(j);
                 int travelTime = Math.abs(vehicle.currentRow - ride.startLine) + Math.abs(vehicle.currentCol - ride.startCol);
                 int earlyStart = Math.max(vehicle.availableTime + travelTime, ride.earlyStart);
@@ -141,9 +141,4 @@ public class Instancedm {
         return score();
     }
 
-   }
-
-    
-
-   
-    
+}

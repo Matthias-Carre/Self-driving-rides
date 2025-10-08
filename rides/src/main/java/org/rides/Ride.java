@@ -1,5 +1,4 @@
-package rides;
-
+package org.rides;
 //import java.io.*;
 //import java.util.ArrayList;
 
@@ -28,4 +27,3 @@ class Ride {
 
 
 }
-

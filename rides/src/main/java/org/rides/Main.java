@@ -1,10 +1,8 @@
-package rides;
+package org.rides;
 
 import java.io.*;
 
 //file use for the moment
-
-
 
 public class Main {
 
@@ -20,7 +18,7 @@ public class Main {
         Instancemc inst = new Instancemc("./inputs/a_example.in");
         inst.fileOut = "outmc_a_example.in";
         inst.longestRides();
-        
+
         inst = new Instancemc("./inputs/b_should_be_easy.in");
         inst.earlyRides();
 
@@ -42,7 +40,13 @@ public class Main {
         inst = new Instancemc("./inputs/group_D_instance.in");
         inst.earlyStartGoal();
 
-        
+        inst = new Instancemc("./inputs/group-p.in");
+        inst.earlyStartGoal();
+
+        inst = new Instancemc("./inputs/group-p_big.in");
+        inst.earlyStartGoal();
+
+
     }
     public static void main(String[] args) throws IOException {
         //rundm();

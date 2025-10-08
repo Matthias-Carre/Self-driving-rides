@@ -1,4 +1,4 @@
-package rides;
+package org.rides;
 
 import java.util.List;
 import java.io.*;
@@ -113,7 +113,7 @@ public class Instancemc {
         out();
         return score();
     }
-    
+
     protected int longestRides(){
         ArrayList<Ride> ridesSorted = new ArrayList<>();
         for(int j=0;j<numRides;j++){
