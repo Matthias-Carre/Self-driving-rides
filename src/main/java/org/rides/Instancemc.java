@@ -79,7 +79,7 @@ public class Instancemc {
             int score = vehicle.calculateScore(this.startingBonus);
             totalScore += score;
         }
-        System.out.println("Total Score: "+ fileIn + ": " + totalScore);
+        //System.out.println("Total Score: "+ fileIn + ": " + totalScore);
         return totalScore;
     }
 
@@ -210,9 +210,9 @@ public class Instancemc {
         }
         //upgradeRide(vehicles.get(6));
         //upgradeRide(vehicles.get(7));
-        swapTry(vehicles);
+        //swapTry(vehicles);
         printMetrics();
-        out();
+        //out();
         return score();
 
     }
@@ -328,11 +328,13 @@ public class Instancemc {
         }
         for(int i=0; i<rides.size();i++) {
             maxRidesPoints += rides.get(i).distance;
+            finisedRides++;
         }
-        System.out.println("Metrics of "+ fileIn);
-        System.out.println("Theorical max values:\n Max bonus:"+numRides+"Max Rides Points:"+maxRidesPoints);
-        System.out.println("Results: \n number of Finised Rides:"+finisedRides);
-        System.out.println(" number of bonus:"+numBonus);
+        System.out.println("=-=-= Metrics of "+ fileIn+" =-=-=");
+        System.out.println("Theorical max values:\n Max bonus:"+numRides+"\n Max Rides Points:"+maxRidesPoints+"\n Total="+maxRidesPoints+numRides*startingBonus);
+        System.out.println("Results: \n number of Finised Rides:"+finisedRides+"/"+numRides);
+        System.out.println(" number of bonus:"+numBonus+"/"+numRides);
+        System.out.println(" Final Score:"+totalScore);
 
 
 
