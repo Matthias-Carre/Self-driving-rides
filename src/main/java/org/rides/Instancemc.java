@@ -111,6 +111,7 @@ public class Instancemc {
                 bestVehicle.availableTime = bestTime + ride.distance;
             }
         }
+        printMetrics();
         out();
         return score();
     }
@@ -260,7 +261,7 @@ public class Instancemc {
                 bestVehicle.availableTime = bestTime + ride.distance;
             }
         }
-
+        printMetrics();
         out();
         return score();
 
@@ -320,23 +321,32 @@ public class Instancemc {
         int numBonus = 0;
         int finisedRides = 0;
         int maxRidesPoints=0;
+        float avgWaitingTime=0;
+        int maxPoints=0;
 
         for (Vehicle vehicle : vehicles) {
-            numBonus+=1;
             int score = vehicle.calculateScore(this.startingBonus);
+            numBonus += vehicle.numberOfBonus();
             totalScore += score;
+            avgWaitingTime += vehicle.timeWaiting();
+            finisedRides += vehicle.racesAssi.size();
         }
-        for(int i=0; i<rides.size();i++) {
-            maxRidesPoints += rides.get(i).distance;
-            finisedRides++;
+        avgWaitingTime = avgWaitingTime / numVehicles;
+        for (Ride ride : rides) {
+            maxRidesPoints += ride.distance;
         }
+        maxPoints = ( maxRidesPoints+ (numRides*startingBonus));
         System.out.println("=-=-= Metrics of "+ fileIn+" =-=-=");
-        System.out.println("Theorical max values:\n Max bonus:"+numRides+"\n Max Rides Points:"+maxRidesPoints+"\n Total="+maxRidesPoints+numRides*startingBonus);
-        System.out.println("Results: \n number of Finised Rides:"+finisedRides+"/"+numRides);
-        System.out.println(" number of bonus:"+numBonus+"/"+numRides);
-        System.out.println(" Final Score:"+totalScore);
+        System.out.println("#rides = "+ numRides);
+        System.out.println("#vehicles = "+ numVehicles);
+        System.out.println("max time = "+ maxSteps);
+        System.out.println("Bonus value = "+startingBonus);
 
-
+        System.out.println("Theorical max values:\n Max bonus : "+numRides+"\n Max Rides Points : "+maxRidesPoints+"\n Total="+ maxPoints );
+        System.out.println("Results: \n number of Finised Rides : "+finisedRides+"/"+numRides);
+        System.out.println(" number of bonus : "+numBonus+"/"+numRides);
+        System.out.println(" average waiting time : "+ (int) avgWaitingTime );
+        System.out.println(" Final Score : "+totalScore);
 
     }
 }

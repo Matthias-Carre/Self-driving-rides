@@ -54,4 +54,43 @@ class Vehicle {
 
         return totalScore;
     }
+
+    public int numberOfBonus() {
+        int numBonus = 0;
+        int col=0;
+        int line=0;
+        int time=0;
+        for (Ride ride : this.racesAssi) {
+            //System.out.println("Ride ID: " + ride.rideId + " erlystart"+ ride.earlyStart + "Late Finish: " + ride.lateFin + ", Distance: " + ride.distance + ", Available Time: " + this.availableTime);
+            time += Math.abs(col - ride.startCol) + Math.abs(line - ride.startLine);
+            if (time <= ride.earlyStart) {
+                numBonus++;
+                time = ride.earlyStart;
+            }
+            time += ride.distance;
+            col =  ride.endCol;
+            line = ride.endLine;
+        }
+
+        return numBonus;
+    }
+    public int timeWaiting(){
+        int timeWait = 0;
+        int col=0;
+        int line=0;
+        int time=0;
+        for (Ride ride : this.racesAssi) {
+            //System.out.println("Ride ID: " + ride.rideId + " erlystart"+ ride.earlyStart + "Late Finish: " + ride.lateFin + ", Distance: " + ride.distance + ", Available Time: " + this.availableTime);
+            time += Math.abs(col - ride.startCol) + Math.abs(line - ride.startLine);
+            if (time <= ride.earlyStart) {
+                timeWait += ride.earlyStart - time;
+                time = ride.earlyStart;
+            }
+            time += ride.distance;
+            col =  ride.endCol;
+            line = ride.endLine;
+        }
+
+        return timeWait;
+    }
 }
