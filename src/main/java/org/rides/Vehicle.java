@@ -25,7 +25,8 @@ class Vehicle {
 
     public void printRides(){
         for(int i=0;i<this.racesAssi.size();i++){
-            System.out.println(this.racesAssi.get(i).rideId);
+            System.out.printf(""+this.racesAssi.get(i).rideId+" ");
+
         }
         System.out.println();
     }

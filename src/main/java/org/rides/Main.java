@@ -24,8 +24,13 @@ public class Main {
         for (File file : listOfFiles) {
             System.out.println(file.getName()) ;
             Instancemc inst = new Instancemc(file.getPath());
-            int res = inst.longestRidesLocalSearch();
-            addResult(outFile,file+" Longest Rides : "+res);
+            //int res = inst.longestRidesLocalSearch();
+            //addResult(outFile,file+" Longest Rides : "+res);
+
+            inst.setFileOut(file.getName());
+            int res = inst.randomAssignedRides();
+
+            addResult(outFile,file+"  : " + res +" "+ inst.numRidesDone + " "+inst.numBonus);
             //inst.earlyStartGoal();
         }
     }
@@ -39,7 +44,10 @@ public class Main {
         instd.testGoal();
     }
     public static void runmc() throws IOException {
-        runForFolder("./inputs","./out/res.txt");
+        for(int i=0;i<20;i++){
+            runForFolder("./intest","./out/res.txt");
+        }
+
 
         /*
         Instancemc inst = new Instancemc("./inputs/a_example.in");

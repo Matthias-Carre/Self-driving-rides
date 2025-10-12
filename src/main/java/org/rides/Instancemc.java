@@ -10,7 +10,7 @@ import java.util.Collections;
 public class Instancemc {
 
     String fileIn;
-    String fileOut = "outdefault" ;
+    String fileOut = "outputs/dflt" ;
 
     int rows;
     int cols;
@@ -18,6 +18,9 @@ public class Instancemc {
     int numRides;
     int startingBonus;
     int maxSteps;
+
+    int numBonus=0;
+    int numRidesDone=0;
 
     ArrayList<Vehicle> vehicles;
     ArrayList<Ride> rides;
@@ -58,11 +61,12 @@ public class Instancemc {
     }
 
     private void out() {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter("outputs/" + fileOut))) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter( fileOut))) {
             for (Vehicle vehicle : vehicles) {
                 // Écrivez l'ID du véhicule et ses courses assignées
                 writer.write(vehicle.racesAssi.size() + " ");
                 for (Ride ride : vehicle.racesAssi) {
+                    //System.out.println("TEST On affecte ride"+ride.rideId + "au vehicle"+ vehicle.vehicleId);
                     writer.write(ride.rideId + " ");
                 }
                 writer.newLine(); // Passez à la ligne suivante
@@ -72,6 +76,11 @@ public class Instancemc {
         }
     }
 
+    public void setFileOut(String name){
+        //on retire le .in de name
+        String filename = name.substring(0, name.lastIndexOf("."));
+        this.fileOut = "outputs/"+filename+".out";
+    }
 
     private int score(){
         int totalScore = 0;
@@ -79,10 +88,23 @@ public class Instancemc {
             int score = vehicle.calculateScore(this.startingBonus);
             totalScore += score;
         }
+
         //System.out.println("Total Score: "+ fileIn + ": " + totalScore);
         return totalScore;
     }
-
+    public boolean isValid(){
+        int[] tab = new int[numRides];
+        for(Vehicle vehicle : vehicles){
+            for (Ride ride : vehicle.racesAssi) {
+                if(tab[ride.rideId] == 0){
+                    tab[ride.rideId] = 1;
+                }else {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
     protected int earlyStartGoal(){
         for (int i = 0; i < rides.size(); i++) {
             Ride ride = rides.get(i);
@@ -114,6 +136,55 @@ public class Instancemc {
         printMetrics();
         out();
         return score();
+    }
+
+    protected int shortestRides(){
+        ArrayList<Ride> ridesSorted = new ArrayList<>();
+        for(int j=0;j<numRides;j++){
+            Ride shortestRide=null;
+            for(int i = 0; i < rides.size(); i++) {
+                Ride ride = rides.get(i);
+                if(shortestRide==null && !ride.assigned ){
+                    shortestRide=ride;
+                }
+                else if( ((!ride.assigned) && (ride.distance < shortestRide.distance))){
+                    shortestRide=ride;
+                }
+            }
+            ridesSorted.add(shortestRide);
+            shortestRide.assigned = true;
+        }
+
+
+        for (int i = 0; i < ridesSorted.size(); i++) {
+            Ride ride = ridesSorted.get(i);
+            Vehicle bestVehicle = null;
+            int bestTime = Integer.MAX_VALUE;
+
+            for (int j = 0; j < vehicles.size(); j++) {
+                Vehicle vehicle = vehicles.get(j);
+                int travelTime = Math.abs(vehicle.currentRow - ride.startLine) + Math.abs(vehicle.currentCol - ride.startCol);
+                int earlyStart = Math.max(vehicle.availableTime + travelTime, ride.earlyStart);
+                int endTime = earlyStart + ride.distance;
+                if (endTime <= ride.lateFin) {
+                    if (earlyStart < bestTime) {
+                        bestVehicle = vehicle;
+                        bestTime = earlyStart;
+                    }
+                }
+            }
+
+            if (bestVehicle != null) {
+                bestVehicle.racesAssi.add(ride);
+                bestVehicle.currentRow = ride.endLine;
+                bestVehicle.currentCol = ride.endCol;
+                bestVehicle.availableTime = bestTime + ride.distance;
+            }
+        }
+        printMetrics();
+        out();
+        return score();
+
     }
 
     protected int longestRides(){
@@ -165,8 +236,62 @@ public class Instancemc {
 
     }
 
+    protected int randomAssignedRides(){
+        for(Ride ride : rides){
+            Vehicle vehicle = vehicles.get((int) (Math.random()*vehicles.size()));
+            vehicle.racesAssi.add(ride);
+        }
+        System.out.println("score:"+score());
+
+        for(Vehicle vehicle1:vehicles) {
+
+            //vehicle1.printRides();
+
+            for (int i=0;i<vehicle1.racesAssi.size();i++) {
+
+                Ride ridev1 = vehicle1.racesAssi.get(i);
+
+                boolean assigned = false;
+                for (Vehicle vehicle2 : vehicles) {
+                    int val = vehicle2.calculateScore(numBonus) + vehicle1.calculateScore(numBonus);
+                    if(vehicle1.vehicleId == vehicle2.vehicleId) {continue;}
+                    for (int j = 0; j < vehicle2.racesAssi.size(); j++) {
+
+                        Ride ridev2 = vehicle2.racesAssi.remove(j);
+                        vehicle1.racesAssi.remove(i);
+
+                        vehicle1.racesAssi.add(i, ridev2);
+                        vehicle2.racesAssi.add(j, ridev1);
+
+                        int newVal = vehicle1.calculateScore(numBonus)+vehicle2.calculateScore(numBonus);
+                        //System.out.println("TEST V1:"+val+" V2:"+newVal);
+                        if (newVal > val) {
+                            //System.out.println("TEST: meilleur val:" + newVal + " previus:" + val);
+                            //System.out.println("On echange ride:" + ridev1.rideId + " sur voiture:" + vehicle1.vehicleId + "et v:"+vehicle2.vehicleId);
+                            assigned = true;
+                            break;
+                        }
+                        vehicle2.racesAssi.remove(j);
+                        vehicle1.racesAssi.remove(i);
+
+                        vehicle1.racesAssi.add(i, ridev1);
+                        vehicle2.racesAssi.add(j, ridev2);
+                    }
+                    if (assigned) {
+                        break;
+                    }
+                }
+            }
+        }
+        System.out.println(score());
+        System.out.println(isValid());
+        return score();
+    }
+
     protected int longestRidesLocalSearch(){
         ArrayList<Ride> ridesSorted = new ArrayList<>();
+        ArrayList<Ride> rideUnassigned = new ArrayList<>();
+
         for(int j=0;j<numRides;j++){
             Ride longestRide=null;
             for(int i = 0; i < rides.size(); i++) {
@@ -184,7 +309,8 @@ public class Instancemc {
 
 
         for (int i = 0; i < ridesSorted.size(); i++) {
-            Ride ride = ridesSorted.get(i);
+            //Ride ride = ridesSorted.get(i);
+            Ride ride = rides.get(i);
             Vehicle bestVehicle = null;
             int bestTime = Integer.MAX_VALUE;
 
@@ -207,11 +333,48 @@ public class Instancemc {
                 bestVehicle.currentRow = ride.endLine;
                 bestVehicle.currentCol = ride.endCol;
                 bestVehicle.availableTime = bestTime + ride.distance;
+            }else{
+                rideUnassigned.add(ride);
             }
         }
-        //upgradeRide(vehicles.get(6));
-        //upgradeRide(vehicles.get(7));
-        //swapTry(vehicles);
+        for(Vehicle vehicle1:vehicles) {
+            for (int i=0;i<vehicle1.racesAssi.size();i++) {
+
+                Ride ridev1 = vehicle1.racesAssi.get(i);
+
+                boolean assigned = false;
+                for (Vehicle vehicle2 : vehicles) {
+                    int val = vehicle2.calculateScore(numBonus) + vehicle1.calculateScore(numBonus);
+                    if(vehicle1.vehicleId == vehicle2.vehicleId) {continue;}
+                    for (int j = 0; j < vehicle2.racesAssi.size(); j++) {
+
+                        Ride ridev2 = vehicle2.racesAssi.remove(j);
+                        vehicle1.racesAssi.remove(i);
+
+                        vehicle1.racesAssi.add(i, ridev2);
+                        vehicle2.racesAssi.add(j, ridev1);
+
+                        int newVal = vehicle1.calculateScore(numBonus)+vehicle2.calculateScore(numBonus);
+                        //System.out.println("TEST V1:"+val+" V2:"+newVal);
+                        if (newVal > val) {
+                            System.out.println("TEST: meilleur val:" + newVal + " previus:" + val);
+                            System.out.println("On echange ride:" + ridev1.rideId + " sur voiture:" + vehicle1.vehicleId + "et v:"+vehicle2.vehicleId);
+                            assigned = true;
+                            break;
+                        }
+                        vehicle2.racesAssi.remove(j);
+                        vehicle1.racesAssi.remove(i);
+
+                        vehicle1.racesAssi.add(i, ridev1);
+                        vehicle2.racesAssi.add(j, ridev2);
+                    }
+                    if (assigned) {
+                        break;
+                    }
+                }
+            }
+        }
+
         printMetrics();
         //out();
         return score();
@@ -261,6 +424,7 @@ public class Instancemc {
                 bestVehicle.availableTime = bestTime + ride.distance;
             }
         }
+
         printMetrics();
         out();
         return score();
@@ -335,6 +499,8 @@ public class Instancemc {
         for (Ride ride : rides) {
             maxRidesPoints += ride.distance;
         }
+        this.numBonus = numBonus;
+        this.numRidesDone = numRides;
         maxPoints = ( maxRidesPoints+ (numRides*startingBonus));
         System.out.println("=-=-= Metrics of "+ fileIn+" =-=-=");
         System.out.println("#rides = "+ numRides);
