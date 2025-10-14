@@ -2,6 +2,9 @@ package org.rides;
 
 import java.io.*;
 
+import static java.lang.System.console;
+import static java.lang.System.currentTimeMillis;
+
 //file use for the moment
 
 public class Main {
@@ -28,9 +31,11 @@ public class Main {
             //addResult(outFile,file+" Longest Rides : "+res);
 
             inst.setFileOut(file.getName());
-            int res = inst.randomAssignedRides();
-
-            addResult(outFile,file+"  : " + res +" "+ inst.numRidesDone + " "+inst.numBonus);
+            long t1 = System.currentTimeMillis();
+            int res = inst.longestRidesLocalSearch();
+            long t2 = System.currentTimeMillis();
+            long delta = t2 - t1;
+            addResult(outFile,file+"  : " + res +" "+ inst.numRidesDone + " "+inst.numBonus+" "+delta);
             //inst.earlyStartGoal();
         }
     }

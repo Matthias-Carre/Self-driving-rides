@@ -9,6 +9,7 @@ class Vehicle {
     int currentRow;
     int currentCol;
     int availableTime;
+    int rideDone;
     List<Ride> racesAssi;
 
     public Vehicle(int vehicleId) {
@@ -32,10 +33,12 @@ class Vehicle {
     }
 
     public int calculateScore(int bonus) {
+        int rideDone=0;
         int totalScore = 0;
         int col=0;
         int line=0;
         int time=0;
+
         for (Ride ride : this.racesAssi) {
 
             //System.out.println("Ride ID: " + ride.rideId + " erlystart"+ ride.earlyStart + "Late Finish: " + ride.lateFin + ", Distance: " + ride.distance + ", Available Time: " + this.availableTime);
@@ -48,11 +51,12 @@ class Vehicle {
             time += ride.distance;
             if (time <= ride.lateFin) {
                 totalScore += ride.distance;
+                rideDone++;
             }
             col =  ride.endCol;
             line = ride.endLine;
         }
-
+        this.rideDone = rideDone;
         return totalScore;
     }
 

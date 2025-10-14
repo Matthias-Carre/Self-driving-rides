@@ -230,7 +230,7 @@ public class Instancemc {
                 bestVehicle.availableTime = bestTime + ride.distance;
             }
         }
-
+        printMetrics();
         out();
         return score();
 
@@ -498,14 +498,14 @@ public class Instancemc {
             numBonus += vehicle.numberOfBonus();
             totalScore += score;
             avgWaitingTime += vehicle.timeWaiting();
-            finisedRides += vehicle.racesAssi.size();
+            finisedRides += vehicle.rideDone;
         }
         avgWaitingTime = avgWaitingTime / numVehicles;
         for (Ride ride : rides) {
             maxRidesPoints += ride.distance;
         }
         this.numBonus = numBonus;
-        this.numRidesDone = numRides;
+        this.numRidesDone = finisedRides;
         maxPoints = ( maxRidesPoints+ (numRides*startingBonus));
         System.out.println("=-=-= Metrics of "+ fileIn+" =-=-=");
         System.out.println("#rides = "+ numRides);
