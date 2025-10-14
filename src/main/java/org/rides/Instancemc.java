@@ -242,7 +242,8 @@ public class Instancemc {
             vehicle.racesAssi.add(ride);
         }
         System.out.println("score:"+score());
-
+        printMetrics();
+        /*
         for(Vehicle vehicle1:vehicles) {
 
             //vehicle1.printRides();
@@ -281,8 +282,12 @@ public class Instancemc {
                         break;
                     }
                 }
+
             }
+
+
         }
+        */
         System.out.println(score());
         System.out.println(isValid());
         return score();
