@@ -31,12 +31,11 @@ public class Main {
             //addResult(outFile,file+" Longest Rides : "+res);
 
             inst.setFileOut(file.getName());
-            long t1 = System.currentTimeMillis();
-            int res = inst.longestRidesLocalSearch();
-            long t2 = System.currentTimeMillis();
-            long delta = t2 - t1;
-            addResult(outFile,file+"  : " + res +" "+ inst.numRidesDone + " "+inst.numBonus+" "+delta);
-            //inst.earlyStartGoal();
+
+            int res = inst.startingTime();
+            addResult(outFile,file+"  : " + res );
+
+
         }
     }
 
@@ -50,7 +49,7 @@ public class Main {
     }
     public static void runmc() throws IOException {
 
-        runForFolder("./in","./out/res.txt");
+        runForFolder("./in","./out/testB.txt");
 
 
 
