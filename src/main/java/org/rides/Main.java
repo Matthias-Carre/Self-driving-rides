@@ -27,14 +27,10 @@ public class Main {
         for (File file : listOfFiles) {
             System.out.println(file.getName()) ;
             Instancemc inst = new Instancemc(file.getPath());
-            //int res = inst.longestRidesLocalSearch();
-            //addResult(outFile,file+" Longest Rides : "+res);
 
             inst.setFileOut(file.getName());
-
-            int res = inst.startingTime();
-            addResult(outFile,file+"  : " + res );
-
+            int res = inst.longestRidesLocalSearch();
+            addResult(outFile,file+" : " + res );
 
         }
     }
@@ -49,7 +45,7 @@ public class Main {
     }
     public static void runmc() throws IOException {
 
-        runForFolder("./in","./out/testB.txt");
+        runForFolder("./in","./out/resLRLS.txt");
 
 
 
