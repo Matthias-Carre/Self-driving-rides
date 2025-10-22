@@ -2,8 +2,7 @@ package org.rides;
 
 import java.io.*;
 
-import static java.lang.System.console;
-import static java.lang.System.currentTimeMillis;
+import static java.lang.System.*;
 
 //file use for the moment
 
@@ -29,9 +28,11 @@ public class Main {
             Instancemc inst = new Instancemc(file.getPath());
 
             inst.setFileOut(file.getName());
-            int res = inst.longestRidesLocalSearch();
+            int res = inst.earlyStartGoalLS();
             addResult(outFile,file+" : " + res );
-
+            System.out.println(inst.isValid());
+            inst.setFileOut("ESGLS/"+file.getName());
+            inst.out();
         }
     }
 
@@ -45,7 +46,7 @@ public class Main {
     }
     public static void runmc() throws IOException {
 
-        runForFolder("./in","./out/resLRLS.txt");
+        runForFolder("./in","./out_2/res.txt");
 
 
 
