@@ -26,13 +26,3 @@ Vous pouvez remplacer `inst.earlyStartGoalLS()` par l'un des appels de méthode 
 * `inst.testGoalDy()`
 * `inst.earlyStartGoalLS()`
 * `inst.longestRidesLocalSearch()`
-
-
-#### Exemple :
-
-Pour tester l'heuristique qui priorise les courses les plus courtes (`shortestRides`), changez simplement la ligne comme suit :
-
-**Avant :**
-```java
-//fonction utiliser
-int res = inst.earlyStartGoalLS();
