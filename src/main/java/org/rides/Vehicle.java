@@ -9,6 +9,7 @@ class Vehicle {
     int currentRow;
     int currentCol;
     int availableTime;
+    int rideDone;
     List<Ride> racesAssi;
 
     public Vehicle(int vehicleId) {
@@ -25,16 +26,19 @@ class Vehicle {
 
     public void printRides(){
         for(int i=0;i<this.racesAssi.size();i++){
-            System.out.println(this.racesAssi.get(i).rideId);
+            System.out.printf(""+this.racesAssi.get(i).rideId+" ");
+
         }
         System.out.println();
     }
 
     public int calculateScore(int bonus) {
+        int rideDone=0;
         int totalScore = 0;
         int col=0;
         int line=0;
         int time=0;
+
         for (Ride ride : this.racesAssi) {
 
             //System.out.println("Ride ID: " + ride.rideId + " erlystart"+ ride.earlyStart + "Late Finish: " + ride.lateFin + ", Distance: " + ride.distance + ", Available Time: " + this.availableTime);
@@ -47,11 +51,51 @@ class Vehicle {
             time += ride.distance;
             if (time <= ride.lateFin) {
                 totalScore += ride.distance;
+                rideDone++;
             }
             col =  ride.endCol;
             line = ride.endLine;
         }
-
+        this.rideDone = rideDone;
         return totalScore;
+    }
+
+    public int numberOfBonus() {
+        int numBonus = 0;
+        int col=0;
+        int line=0;
+        int time=0;
+        for (Ride ride : this.racesAssi) {
+            //System.out.println("Ride ID: " + ride.rideId + " erlystart"+ ride.earlyStart + "Late Finish: " + ride.lateFin + ", Distance: " + ride.distance + ", Available Time: " + this.availableTime);
+            time += Math.abs(col - ride.startCol) + Math.abs(line - ride.startLine);
+            if (time <= ride.earlyStart) {
+                numBonus++;
+                time = ride.earlyStart;
+            }
+            time += ride.distance;
+            col =  ride.endCol;
+            line = ride.endLine;
+        }
+
+        return numBonus;
+    }
+    public int timeWaiting(){
+        int timeWait = 0;
+        int col=0;
+        int line=0;
+        int time=0;
+        for (Ride ride : this.racesAssi) {
+            //System.out.println("Ride ID: " + ride.rideId + " erlystart"+ ride.earlyStart + "Late Finish: " + ride.lateFin + ", Distance: " + ride.distance + ", Available Time: " + this.availableTime);
+            time += Math.abs(col - ride.startCol) + Math.abs(line - ride.startLine);
+            if (time <= ride.earlyStart) {
+                timeWait += ride.earlyStart - time;
+                time = ride.earlyStart;
+            }
+            time += ride.distance;
+            col =  ride.endCol;
+            line = ride.endLine;
+        }
+
+        return timeWait;
     }
 }
