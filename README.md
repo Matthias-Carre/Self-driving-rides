@@ -19,10 +19,12 @@ Pour tester une nouvelle stratégie, il vous suffit de modifier **une seule lign
     int res = inst.earlyStartGoalLS(); // <-- MODIFIEZ CETTE LIGNE
     ```
 
-### 📜 Liste des algorithmes disponibles
+### Liste des algorithmes disponibles
 
 Vous pouvez remplacer `inst.earlyStartGoalLS()` par l'un des appels de méthode suivants de la classe `Instancemc` :
 
 * `inst.testGoalDy()`
 * `inst.earlyStartGoalLS()`
 * `inst.longestRidesLocalSearch()`
+
+### Execution avec Maven
